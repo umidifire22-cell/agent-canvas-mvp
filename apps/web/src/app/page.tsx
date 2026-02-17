@@ -99,13 +99,13 @@ export default function LandingPage() {
                     </Link>
                     <div className="hidden md:flex items-center gap-8">
                         {["Features", "Use Cases", "Pricing", "FAQ"].map((item) => (
-                            <Link key={item} href={`#${item.toLowerCase().replace(" ", "-")}`} className="text-[13px] text-[#86868B] hover:text-white transition-colors duration-200">
+                            <Link key={item} href={`#${item.toLowerCase().replace(" ", "-")}`} className="text-[13px] text-[#A1A1AA] hover:text-white transition-colors duration-200">
                                 {item}
                             </Link>
                         ))}
                     </div>
                     <div className="flex items-center gap-4">
-                        <Link href="/dashboard" className="text-[13px] text-[#86868B] hover:text-white transition-colors duration-200 hidden sm:block">Sign in</Link>
+                        <Link href="/dashboard" className="text-[13px] text-[#A1A1AA] hover:text-white transition-colors duration-200 hidden sm:block">Sign in</Link>
                         <Link href="/dashboard" className="text-[13px] font-medium text-white bg-[#2997FF] hover:bg-[#2997FF]/90 px-4 py-1.5 rounded-full transition-all duration-200">
                             Get Started
                         </Link>
@@ -136,7 +136,7 @@ export default function LandingPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.12 }}
-                        className="mt-6 text-[17px] sm:text-xl text-[#86868B] max-w-2xl mx-auto leading-relaxed font-light"
+                        className="mt-6 text-[17px] sm:text-xl text-[#A1A1AA] max-w-2xl mx-auto leading-relaxed font-light"
                     >
                         The API that turns data into branded images and videos.
                         <br className="hidden sm:block" />
@@ -151,7 +151,7 @@ export default function LandingPage() {
                         <Link href="/dashboard" className="inline-flex items-center gap-2 bg-white text-black px-7 py-3 rounded-full text-[15px] font-medium hover:bg-white/90 transition-all duration-200">
                             Start Building <ArrowRight className="w-4 h-4" />
                         </Link>
-                        <Link href="#how-it-works" className="inline-flex items-center gap-2 text-[#86868B] hover:text-white px-7 py-3 rounded-full text-[15px] font-medium transition-colors duration-200">
+                        <Link href="#how-it-works" className="inline-flex items-center gap-2 text-[#A1A1AA] hover:text-white px-7 py-3 rounded-full text-[15px] font-medium transition-colors duration-200">
                             <Play className="w-4 h-4" /> See How It Works
                         </Link>
                     </motion.div>
@@ -172,7 +172,7 @@ export default function LandingPage() {
                             className="text-center"
                         >
                             <p className="text-3xl sm:text-4xl font-semibold text-white tracking-tight">{m.value}</p>
-                            <p className="mt-1 text-[13px] text-[#86868B]">{m.label}</p>
+                            <p className="mt-1 text-[13px] text-[#A1A1AA]">{m.label}</p>
                         </motion.div>
                     ))}
                 </div>
@@ -181,10 +181,10 @@ export default function LandingPage() {
             {/* ─── Integrations / Logo Cloud ─── */}
             <section className="py-16 px-6 border-b border-white/[0.06]">
                 <div className="max-w-5xl mx-auto">
-                    <p className="text-center text-[13px] text-[#86868B] mb-8 tracking-wide uppercase font-medium">
+                    <p className="text-center text-[13px] text-[#A1A1AA] mb-8 tracking-wide uppercase font-medium">
                         Works with the tools you already use
                     </p>
-                    <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+                    <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-8">
                         {integrations.map((name, i) => (
                             <motion.div
                                 key={i}
@@ -193,10 +193,10 @@ export default function LandingPage() {
                                 whileInView="visible"
                                 viewport={{ once: true }}
                                 variants={fade}
-                                className="flex items-center gap-2 text-[#86868B]/60 hover:text-[#86868B] transition-colors duration-300"
+                                className="flex items-center gap-2.5 text-[#A1A1AA] hover:text-white transition-colors duration-300 bg-white/[0.03] px-4 py-2 rounded-lg border border-white/[0.05] hover:border-white/[0.1] hover:bg-white/[0.06]"
                             >
-                                <Terminal className="w-4 h-4" strokeWidth={1.5} />
-                                <span className="text-[14px] font-medium tracking-tight">{name}</span>
+                                <Terminal className="w-4 h-4 text-[#2997FF]" strokeWidth={2} />
+                                <span className="text-[15px] font-medium tracking-tight">{name}</span>
                             </motion.div>
                         ))}
                     </div>
@@ -209,7 +209,7 @@ export default function LandingPage() {
                     <h2 className="text-3xl sm:text-4xl font-semibold text-white tracking-[-0.03em]">
                         Ship in minutes, not weeks.
                     </h2>
-                    <p className="mt-4 text-[15px] text-[#86868B] font-light">
+                    <p className="mt-4 text-[15px] text-[#A1A1AA] font-light">
                         Five lines of code. That&apos;s all it takes.
                     </p>
                 </div>
@@ -227,10 +227,10 @@ export default function LandingPage() {
                                 <div className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]"></div>
                                 <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]"></div>
                             </div>
-                            <span className="ml-3 text-[11px] text-[#86868B]/60 font-mono">render.ts</span>
+                            <span className="ml-3 text-[11px] text-[#A1A1AA] font-mono">render.ts</span>
                         </div>
                         <pre className="p-5 text-[13px] leading-[1.8] font-mono overflow-x-auto">
-                            <code className="text-[#86868B]"><span className="text-[#FF7B72]">const</span> <span className="text-[#D2A8FF]">result</span> = <span className="text-[#FF7B72]">await</span> <span className="text-[#79C0FF]">agentcanvas</span>.<span className="text-[#D2A8FF]">render</span>({`{`}{"\n"}{"  "}template: <span className="text-[#A5D6FF]">&quot;social-post&quot;</span>,{"\n"}{"  "}data: {`{`}{"\n"}{"    "}title: <span className="text-[#A5D6FF]">&quot;AI just changed everything&quot;</span>,{"\n"}{"    "}brandKit: <span className="text-[#A5D6FF]">&quot;bk_acme_corp&quot;</span>,{"\n"}{"  "}{`}`},{"\n"}{`}`});{"\n"}{"\n"}<span className="text-[#484F58]">// → 1080×1080 branded PNG in ~3 seconds</span>{"\n"}<span className="text-[#FF7B72]">console</span>.<span className="text-[#D2A8FF]">log</span>(result.<span className="text-[#79C0FF]">url</span>);</code>
+                            <code className="text-[#A1A1AA]"><span className="text-[#FF7B72]">const</span> <span className="text-[#D2A8FF]">result</span> = <span className="text-[#FF7B72]">await</span> <span className="text-[#79C0FF]">agentcanvas</span>.<span className="text-[#D2A8FF]">render</span>({`{`}{"\n"}{"  "}template: <span className="text-[#A5D6FF]">&quot;social-post&quot;</span>,{"\n"}{"  "}data: {`{`}{"\n"}{"    "}title: <span className="text-[#A5D6FF]">&quot;AI just changed everything&quot;</span>,{"\n"}{"    "}brandKit: <span className="text-[#A5D6FF]">&quot;bk_acme_corp&quot;</span>,{"\n"}{"  "}{`}`},{"\n"}{`}`});{"\n"}{"\n"}<span className="text-[#484F58]">// → 1080×1080 branded PNG in ~3 seconds</span>{"\n"}<span className="text-[#FF7B72]">console</span>.<span className="text-[#D2A8FF]">log</span>(result.<span className="text-[#79C0FF]">url</span>);</code>
                         </pre>
                     </div>
                 </motion.div>
@@ -247,7 +247,7 @@ export default function LandingPage() {
                         <h2 className="text-4xl sm:text-5xl font-semibold text-white tracking-[-0.03em]">
                             Built for production.
                         </h2>
-                        <p className="mt-4 text-[15px] text-[#86868B] font-light max-w-lg mx-auto">
+                        <p className="mt-4 text-[15px] text-[#A1A1AA] font-light max-w-lg mx-auto">
                             Not a toy. A rendering engine that handles real-world workloads at scale.
                         </p>
                     </div>
@@ -263,10 +263,10 @@ export default function LandingPage() {
                                 className="bg-black p-8 lg:p-10 group hover:bg-[#0D0D0D] transition-colors duration-300"
                             >
                                 <div className="w-10 h-10 rounded-xl bg-[#1D1D1F] border border-white/[0.06] flex items-center justify-center mb-5 group-hover:border-[#2997FF]/20 transition-colors duration-300">
-                                    <f.icon className="w-5 h-5 text-[#86868B] group-hover:text-[#2997FF] transition-colors duration-300" strokeWidth={1.5} />
+                                    <f.icon className="w-5 h-5 text-[#A1A1AA] group-hover:text-[#2997FF] transition-colors duration-300" strokeWidth={1.5} />
                                 </div>
                                 <h3 className="text-[16px] font-semibold text-white mb-2">{f.title}</h3>
-                                <p className="text-[14px] text-[#86868B] leading-relaxed font-light">{f.desc}</p>
+                                <p className="text-[14px] text-[#A1A1AA] leading-relaxed font-light">{f.desc}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -305,9 +305,9 @@ export default function LandingPage() {
                                 </div>
                             </div>
                             <div>
-                                <span className="text-[12px] text-[#86868B]/50 font-mono mb-1 block">{step.num}</span>
+                                <span className="text-[12px] text-[#A1A1AA]/50 font-mono mb-1 block">{step.num}</span>
                                 <h3 className="text-[17px] font-semibold text-white mb-2">{step.title}</h3>
-                                <p className="text-[14px] text-[#86868B] leading-relaxed font-light max-w-md">{step.desc}</p>
+                                <p className="text-[14px] text-[#A1A1AA] leading-relaxed font-light max-w-md">{step.desc}</p>
                             </div>
                         </motion.div>
                     ))}
@@ -325,7 +325,7 @@ export default function LandingPage() {
                         <h2 className="text-4xl sm:text-5xl font-semibold text-white tracking-[-0.03em]">
                             What you can build.
                         </h2>
-                        <p className="mt-4 text-[15px] text-[#86868B] font-light max-w-lg mx-auto">
+                        <p className="mt-4 text-[15px] text-[#A1A1AA] font-light max-w-lg mx-auto">
                             From AI agents to marketing pipelines — real production use cases.
                         </p>
                     </div>
@@ -341,10 +341,10 @@ export default function LandingPage() {
                                 className="bg-[#161617] rounded-2xl border border-white/[0.06] p-8 hover:border-white/[0.12] transition-all duration-300 group"
                             >
                                 <div className="w-10 h-10 rounded-xl bg-[#1D1D1F] border border-white/[0.06] flex items-center justify-center mb-5 group-hover:border-[#2997FF]/20 transition-colors duration-300">
-                                    <uc.icon className="w-5 h-5 text-[#86868B] group-hover:text-[#2997FF] transition-colors duration-300" strokeWidth={1.5} />
+                                    <uc.icon className="w-5 h-5 text-[#A1A1AA] group-hover:text-[#2997FF] transition-colors duration-300" strokeWidth={1.5} />
                                 </div>
                                 <h3 className="text-[17px] font-semibold text-white mb-2">{uc.title}</h3>
-                                <p className="text-[14px] text-[#86868B] leading-relaxed font-light">{uc.desc}</p>
+                                <p className="text-[14px] text-[#A1A1AA] leading-relaxed font-light">{uc.desc}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -378,7 +378,7 @@ export default function LandingPage() {
                                     </div>
                                     <div>
                                         <p className="text-[13px] font-medium text-white">{t.name}</p>
-                                        <p className="text-[12px] text-[#86868B]">{t.role}</p>
+                                        <p className="text-[12px] text-[#A1A1AA]">{t.role}</p>
                                     </div>
                                 </div>
                             </motion.div>
@@ -395,7 +395,7 @@ export default function LandingPage() {
                         <h2 className="text-4xl sm:text-5xl font-semibold text-white tracking-[-0.03em]">
                             Simple pricing.
                         </h2>
-                        <p className="mt-4 text-[15px] text-[#86868B] font-light">
+                        <p className="mt-4 text-[15px] text-[#A1A1AA] font-light">
                             Start free. Upgrade when you&apos;re ready. No hidden fees.
                         </p>
                     </div>
@@ -409,8 +409,8 @@ export default function LandingPage() {
                                 viewport={{ once: true }}
                                 variants={fade}
                                 className={`rounded-2xl p-7 flex flex-col ${plan.highlight
-                                        ? "bg-[#161617] border-2 border-[#2997FF]/30 relative"
-                                        : "bg-[#161617]/60 border border-white/[0.06]"
+                                    ? "bg-[#161617] border-2 border-[#2997FF]/30 relative"
+                                    : "bg-[#161617]/60 border border-white/[0.06]"
                                     }`}
                             >
                                 {plan.highlight && (
@@ -420,11 +420,11 @@ export default function LandingPage() {
                                 )}
                                 <h3 className="text-[15px] font-semibold text-white">{plan.name}</h3>
                                 <div className="mt-3 flex items-baseline gap-0.5">
-                                    {plan.price !== "Custom" && <span className="text-[14px] text-[#86868B]">$</span>}
+                                    {plan.price !== "Custom" && <span className="text-[14px] text-[#A1A1AA]">$</span>}
                                     <span className="text-[38px] font-semibold text-white tracking-tight leading-none">{plan.price}</span>
-                                    {plan.period && <span className="text-[13px] text-[#86868B] ml-1">{plan.period}</span>}
+                                    {plan.period && <span className="text-[13px] text-[#A1A1AA] ml-1">{plan.period}</span>}
                                 </div>
-                                <p className="mt-3 text-[13px] text-[#86868B] font-light">{plan.desc}</p>
+                                <p className="mt-3 text-[13px] text-[#A1A1AA] font-light">{plan.desc}</p>
                                 <ul className="mt-6 space-y-2.5 flex-1">
                                     {plan.features.map((f, j) => (
                                         <li key={j} className="flex items-center gap-2.5 text-[13px] text-[#F5F5F7]/70">
@@ -436,8 +436,8 @@ export default function LandingPage() {
                                 <Link
                                     href={plan.name === "Enterprise" ? "mailto:hello@agentcanvas.io" : "/dashboard"}
                                     className={`block text-center py-2.5 mt-6 rounded-full text-[13px] font-medium transition-all duration-200 ${plan.highlight
-                                            ? "bg-[#2997FF] text-white hover:bg-[#2997FF]/90"
-                                            : "border border-white/[0.12] text-white hover:border-white/25"
+                                        ? "bg-[#2997FF] text-white hover:bg-[#2997FF]/90"
+                                        : "border border-white/[0.12] text-white hover:border-white/25"
                                         }`}
                                 >
                                     {plan.cta}
@@ -473,7 +473,7 @@ export default function LandingPage() {
                                     className="w-full flex items-center justify-between py-5 text-left"
                                 >
                                     <span className="text-[15px] font-medium text-white pr-4">{faq.q}</span>
-                                    <ChevronDown className={`w-4 h-4 text-[#86868B] shrink-0 transition-transform duration-200 ${openFaq === i ? "rotate-180" : ""}`} />
+                                    <ChevronDown className={`w-4 h-4 text-[#A1A1AA] shrink-0 transition-transform duration-200 ${openFaq === i ? "rotate-180" : ""}`} />
                                 </button>
                                 <motion.div
                                     initial={false}
@@ -481,7 +481,7 @@ export default function LandingPage() {
                                     transition={{ duration: 0.2, ease: "easeOut" }}
                                     className="overflow-hidden"
                                 >
-                                    <p className="pb-5 text-[14px] text-[#86868B] leading-relaxed font-light">{faq.a}</p>
+                                    <p className="pb-5 text-[14px] text-[#A1A1AA] leading-relaxed font-light">{faq.a}</p>
                                 </motion.div>
                             </motion.div>
                         ))}
@@ -497,7 +497,7 @@ export default function LandingPage() {
                         <h2 className="text-4xl sm:text-5xl font-semibold text-white tracking-[-0.03em]">
                             Built on proven tech.
                         </h2>
-                        <p className="mt-4 text-[15px] text-[#86868B] font-light">
+                        <p className="mt-4 text-[15px] text-[#A1A1AA] font-light">
                             No vendor lock-in. Open standards. Infrastructure you can trust.
                         </p>
                     </div>
@@ -519,7 +519,7 @@ export default function LandingPage() {
                             >
                                 <tech.icon className="w-6 h-6 text-[#2997FF] mx-auto mb-3" strokeWidth={1.5} />
                                 <p className="text-[14px] font-semibold text-white">{tech.name}</p>
-                                <p className="text-[12px] text-[#86868B] mt-1">{tech.desc}</p>
+                                <p className="text-[12px] text-[#A1A1AA] mt-1">{tech.desc}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -534,14 +534,14 @@ export default function LandingPage() {
                         <br />
                         Start rendering at scale.
                     </h2>
-                    <p className="mt-6 text-[16px] text-[#86868B] font-light max-w-md mx-auto">
+                    <p className="mt-6 text-[16px] text-[#A1A1AA] font-light max-w-md mx-auto">
                         50 free renders. No credit card. Deploy in 5 minutes.
                     </p>
                     <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
                         <Link href="/dashboard" className="inline-flex items-center gap-2 bg-white text-black px-8 py-3.5 rounded-full text-[15px] font-medium hover:bg-white/90 transition-all duration-200">
                             Start Building Free <ArrowRight className="w-4 h-4" />
                         </Link>
-                        <Link href="mailto:hello@agentcanvas.io" className="text-[15px] text-[#86868B] hover:text-white font-medium transition-colors duration-200">
+                        <Link href="mailto:hello@agentcanvas.io" className="text-[15px] text-[#A1A1AA] hover:text-white font-medium transition-colors duration-200">
                             Talk to us →
                         </Link>
                     </div>
@@ -559,40 +559,40 @@ export default function LandingPage() {
                                 </div>
                                 <span className="text-[14px] font-semibold text-white">AgentCanvas</span>
                             </div>
-                            <p className="text-[13px] text-[#86868B] font-light leading-relaxed">
+                            <p className="text-[13px] text-[#A1A1AA] font-light leading-relaxed">
                                 The rendering API for AI agents and developers.
                             </p>
                         </div>
                         <div>
-                            <p className="text-[12px] font-semibold text-[#86868B] uppercase tracking-wider mb-4">Product</p>
+                            <p className="text-[12px] font-semibold text-[#A1A1AA] uppercase tracking-wider mb-4">Product</p>
                             <div className="space-y-2.5">
                                 {["Features", "Pricing", "Templates", "API Docs"].map((l) => (
-                                    <Link key={l} href="#" className="block text-[13px] text-[#86868B]/70 hover:text-white transition-colors">{l}</Link>
+                                    <Link key={l} href="#" className="block text-[13px] text-[#A1A1AA]/70 hover:text-white transition-colors">{l}</Link>
                                 ))}
                             </div>
                         </div>
                         <div>
-                            <p className="text-[12px] font-semibold text-[#86868B] uppercase tracking-wider mb-4">Company</p>
+                            <p className="text-[12px] font-semibold text-[#A1A1AA] uppercase tracking-wider mb-4">Company</p>
                             <div className="space-y-2.5">
                                 {["About", "Blog", "Careers", "Contact"].map((l) => (
-                                    <Link key={l} href="#" className="block text-[13px] text-[#86868B]/70 hover:text-white transition-colors">{l}</Link>
+                                    <Link key={l} href="#" className="block text-[13px] text-[#A1A1AA]/70 hover:text-white transition-colors">{l}</Link>
                                 ))}
                             </div>
                         </div>
                         <div>
-                            <p className="text-[12px] font-semibold text-[#86868B] uppercase tracking-wider mb-4">Legal</p>
+                            <p className="text-[12px] font-semibold text-[#A1A1AA] uppercase tracking-wider mb-4">Legal</p>
                             <div className="space-y-2.5">
                                 {["Terms of Service", "Privacy Policy", "Cookie Policy", "Security"].map((l) => (
-                                    <Link key={l} href="#" className="block text-[13px] text-[#86868B]/70 hover:text-white transition-colors">{l}</Link>
+                                    <Link key={l} href="#" className="block text-[13px] text-[#A1A1AA]/70 hover:text-white transition-colors">{l}</Link>
                                 ))}
                             </div>
                         </div>
                     </div>
                     <div className="pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <p className="text-[12px] text-[#86868B]/40">© 2026 AgentCanvas, Inc. All rights reserved.</p>
+                        <p className="text-[12px] text-[#A1A1AA]/40">© 2026 AgentCanvas, Inc. All rights reserved.</p>
                         <div className="flex gap-6">
                             {["Twitter", "GitHub", "Discord"].map((s) => (
-                                <Link key={s} href="#" className="text-[12px] text-[#86868B]/40 hover:text-[#86868B] transition-colors">{s}</Link>
+                                <Link key={s} href="#" className="text-[12px] text-[#A1A1AA]/40 hover:text-[#A1A1AA] transition-colors">{s}</Link>
                             ))}
                         </div>
                     </div>
