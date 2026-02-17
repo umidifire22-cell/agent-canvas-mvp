@@ -1,238 +1,311 @@
+"use client"
+
 import Link from "next/link"
+import { motion } from "framer-motion"
+import { Code, Palette, Film, Target, Zap, Shield, ArrowRight, Play, Check } from "lucide-react"
+
+const fade = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+        opacity: 1,
+        y: 0,
+        transition: { delay: i * 0.1, duration: 0.5, ease: [0.25, 0.4, 0.25, 1] },
+    }),
+}
+
+const features = [
+    { icon: Code, title: "API-First", desc: "RESTful endpoints with OpenAPI spec. Integrate with any stack in under 5 minutes." },
+    { icon: Palette, title: "Brand Kit", desc: "Upload fonts, colors, and logos once. Every render is automatically on-brand." },
+    { icon: Film, title: "Video Output", desc: "1080p video with animations, transitions, and audio. Powered by Remotion." },
+    { icon: Target, title: "Deterministic", desc: "Same input, same output. Every time. No randomness, no surprises." },
+    { icon: Zap, title: "Sub-5s Renders", desc: "Async queue processing handles thousands of concurrent renders." },
+    { icon: Shield, title: "Enterprise Ready", desc: "Rate limiting, API keys, team management, and audit logs." },
+]
+
+const plans = [
+    {
+        name: "Starter",
+        price: "0",
+        period: "/month",
+        desc: "For prototyping and testing.",
+        features: ["50 renders/month", "1 Brand Kit", "Image output", "Community support"],
+        cta: "Start Free",
+        highlight: false,
+    },
+    {
+        name: "Pro",
+        price: "29",
+        period: "/month",
+        desc: "For production workloads.",
+        features: ["2,000 renders/month", "5 Brand Kits", "Image + Video", "Priority queue", "Webhooks", "Email support"],
+        cta: "Start Trial",
+        highlight: true,
+    },
+    {
+        name: "Enterprise",
+        price: "Custom",
+        period: "",
+        desc: "For high-volume needs.",
+        features: ["Unlimited renders", "Unlimited Brand Kits", "Custom templates", "Dedicated infra", "SLA guarantee", "Phone support"],
+        cta: "Contact Sales",
+        highlight: false,
+    },
+]
 
 export default function LandingPage() {
     return (
-        <div className="flex flex-col min-h-screen mesh-gradient">
-            {/* Navigation */}
-            <header className="sticky top-0 z-50 glass border-b border-white/5">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg btn-gradient flex items-center justify-center text-white font-bold text-sm">A</div>
-                        <span className="font-bold text-lg text-white">AgentCanvas</span>
+        <div className="min-h-screen">
+            {/* Nav */}
+            <nav className="fixed top-0 inset-x-0 z-50 border-b border-white/[0.06] bg-black/80 backdrop-blur-xl">
+                <div className="max-w-6xl mx-auto h-14 px-6 flex items-center justify-between">
+                    <Link href="/" className="text-[15px] font-semibold text-white tracking-tight">
+                        AgentCanvas
                     </Link>
-                    <nav className="hidden md:flex items-center gap-8">
-                        <Link className="text-sm text-slate-400 hover:text-white transition-colors" href="#features">Features</Link>
-                        <Link className="text-sm text-slate-400 hover:text-white transition-colors" href="#how-it-works">How It Works</Link>
-                        <Link className="text-sm text-slate-400 hover:text-white transition-colors" href="#pricing">Pricing</Link>
-                        <Link className="text-sm text-slate-400 hover:text-white transition-colors" href="/dashboard">Dashboard</Link>
-                    </nav>
-                    <div className="flex items-center gap-3">
-                        <Link href="/dashboard" className="text-sm text-slate-300 hover:text-white transition-colors hidden sm:block">Log in</Link>
-                        <Link href="/dashboard" className="btn-gradient px-4 py-2 rounded-lg text-sm font-medium">Start Free →</Link>
+                    <div className="hidden md:flex items-center gap-8">
+                        <Link href="#features" className="text-[13px] text-[#86868B] hover:text-white transition-colors duration-200">Features</Link>
+                        <Link href="#how-it-works" className="text-[13px] text-[#86868B] hover:text-white transition-colors duration-200">How It Works</Link>
+                        <Link href="#pricing" className="text-[13px] text-[#86868B] hover:text-white transition-colors duration-200">Pricing</Link>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <Link href="/dashboard" className="text-[13px] text-[#86868B] hover:text-white transition-colors duration-200">Sign in</Link>
+                        <Link
+                            href="/dashboard"
+                            className="text-[13px] font-medium text-white bg-[#2997FF] hover:bg-[#2997FF]/90 px-4 py-1.5 rounded-full transition-all duration-200"
+                        >
+                            Get Started
+                        </Link>
                     </div>
                 </div>
-            </header>
+            </nav>
 
-            <main className="flex-1">
-                {/* Hero Section */}
-                <section className="relative overflow-hidden py-24 sm:py-32 lg:py-40">
-                    <div className="absolute inset-0 overflow-hidden">
-                        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-indigo-500/10 blur-3xl animate-float"></div>
-                        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-purple-500/10 blur-3xl animate-float" style={{ animationDelay: '3s' }}></div>
+            {/* Hero */}
+            <section className="pt-40 pb-24 px-6">
+                <div className="max-w-4xl mx-auto text-center">
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="text-[13px] font-medium text-[#2997FF] mb-6 tracking-wide uppercase"
+                    >
+                        Now in Public Beta
+                    </motion.p>
+                    <motion.h1
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
+                        className="text-5xl sm:text-6xl lg:text-[80px] font-semibold text-white leading-[1.05] tracking-[-0.04em]"
+                    >
+                        Visual AI for
+                        <br />
+                        autonomous agents.
+                    </motion.h1>
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.15 }}
+                        className="mt-6 text-lg sm:text-xl text-[#86868B] max-w-2xl mx-auto leading-relaxed font-light"
+                    >
+                        Generate branded social posts, videos, and stories
+                        with a single API call. Built for developers and AI agents.
+                    </motion.p>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.3 }}
+                        className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+                    >
+                        <Link
+                            href="/dashboard"
+                            className="inline-flex items-center gap-2 bg-white text-black px-7 py-3 rounded-full text-[15px] font-medium hover:bg-white/90 transition-all duration-200"
+                        >
+                            Start Building
+                            <ArrowRight className="w-4 h-4" />
+                        </Link>
+                        <Link
+                            href="#how-it-works"
+                            className="inline-flex items-center gap-2 text-[#2997FF] px-7 py-3 rounded-full text-[15px] font-medium hover:text-[#2997FF]/80 transition-colors duration-200"
+                        >
+                            <Play className="w-4 h-4" />
+                            See How It Works
+                        </Link>
+                    </motion.div>
+                </div>
+
+                {/* Code Block */}
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, delay: 0.4 }}
+                    className="max-w-2xl mx-auto mt-20"
+                >
+                    <div className="bg-[#1D1D1F] rounded-2xl border border-white/[0.06] overflow-hidden">
+                        <div className="flex items-center gap-2 px-5 py-3.5 border-b border-white/[0.06]">
+                            <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]"></div>
+                            <div className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]"></div>
+                            <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]"></div>
+                            <span className="ml-3 text-[12px] text-[#86868B] font-mono">render.ts</span>
+                        </div>
+                        <pre className="p-5 text-[13px] leading-[1.7] font-mono overflow-x-auto">
+                            <code className="text-[#86868B]"><span className="text-[#FF7B72]">const</span> <span className="text-[#D2A8FF]">result</span> = <span className="text-[#FF7B72]">await</span> <span className="text-[#79C0FF]">agentcanvas</span>.<span className="text-[#D2A8FF]">render</span>({`{`}{"\n"}{"  "}template: <span className="text-[#A5D6FF]">&quot;social-post&quot;</span>,{"\n"}{"  "}data: {`{`}{"\n"}{"    "}title: <span className="text-[#A5D6FF]">&quot;AI just changed everything&quot;</span>,{"\n"}{"    "}brandKit: <span className="text-[#A5D6FF]">&quot;bk_acme_corp&quot;</span>,{"\n"}{"  "}{`}`},{"\n"}{`}`});{"\n"}{"\n"}<span className="text-[#484F58]">// → 1080×1080 branded PNG in ~3 seconds</span>{"\n"}<span className="text-[#FF7B72]">console</span>.<span className="text-[#D2A8FF]">log</span>(result.<span className="text-[#79C0FF]">url</span>); <span className="text-[#484F58]">// https://cdn.agentcanvas.io/...</span></code>
+                        </pre>
                     </div>
-                    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center max-w-4xl mx-auto">
-                            <div className="animate-fade-in">
-                                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-6">
-                                    ✨ Now in Public Beta — 50 Free Renders
-                                </span>
-                            </div>
-                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight animate-fade-in-delay-1">
-                                Give Your AI Agents{" "}
-                                <span className="gradient-text">Visual Superpowers</span>
-                            </h1>
-                            <p className="mt-6 text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto animate-fade-in-delay-2">
-                                The first media generation infrastructure designed for autonomous agents.
-                                Generate branded social posts, videos, and stories with a single API call.
-                            </p>
-                            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10 animate-fade-in-delay-3">
-                                <Link href="/dashboard" className="btn-gradient px-8 py-3 rounded-xl text-base font-semibold w-full sm:w-auto text-center">
-                                    Start Building Free →
-                                </Link>
-                                <Link href="#how-it-works" className="glass glass-hover px-8 py-3 rounded-xl text-base font-semibold text-slate-300 w-full sm:w-auto text-center">
-                                    See How It Works
-                                </Link>
-                            </div>
-                        </div>
+                </motion.div>
+            </section>
 
-                        {/* Code Preview */}
-                        <div className="mt-16 sm:mt-20 max-w-3xl mx-auto animate-fade-in-delay-3">
-                            <div className="code-block p-4 sm:p-6 overflow-x-auto">
-                                <div className="flex items-center gap-2 mb-4">
-                                    <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-                                    <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                                    <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
-                                    <span className="text-xs text-slate-500 ml-2">api-request.ts</span>
-                                </div>
-                                <pre className="text-sm">
-                                    <code><span className="text-purple-400">const</span> <span className="text-blue-300">response</span> = <span className="text-purple-400">await</span> <span className="text-yellow-300">fetch</span>(<span className="text-green-400">&quot;https://api.agentcanvas.io/v1/render&quot;</span>, {"{"}{"\n"}  method: <span className="text-green-400">&quot;POST&quot;</span>,{"\n"}  body: JSON.stringify({"{"}{"\n"}    templateId: <span className="text-green-400">&quot;social-post&quot;</span>,{"\n"}    data: {"{"}{"\n"}      title: <span className="text-green-400">&quot;AI just changed everything&quot;</span>,{"\n"}      brandKit: <span className="text-green-400">&quot;bk_acme_corp&quot;</span>{"\n"}    {"}"}{"\n"}  {"}"}){"\n"}{"}"});{"\n"}{"\n"}<span className="text-slate-500">{"// "}→ Returns 1080x1080 branded image in ~3 seconds</span></code>
-                                </pre>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Features Section */}
-                <section id="features" className="py-24 border-t border-white/5">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-16">
-                            <h2 className="text-3xl sm:text-4xl font-bold">
-                                Everything you need to <span className="gradient-text">automate visual content</span>
-                            </h2>
-                            <p className="mt-4 text-slate-400 max-w-2xl mx-auto">
-                                From social posts to video stories, AgentCanvas handles the entire visual pipeline.
-                            </p>
-                        </div>
-                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                            {[
-                                { icon: "⚡", title: "API-First Design", desc: "RESTful API with OpenAPI spec. Integrate with n8n, LangChain, AutoGPT, or your own code in minutes." },
-                                { icon: "🎨", title: "Brand Kit System", desc: "Upload your fonts, colors, and logo once. Every render is automatically on-brand." },
-                                { icon: "🎬", title: "Video Generation", desc: "Generate 1080p video with animations, transitions, and audio using React components powered by Remotion." },
-                                { icon: "📐", title: "Pixel Perfect", desc: "Deterministic rendering ensures identical output every time. No randomness, no surprises." },
-                                { icon: "🚀", title: "Blazing Fast", desc: "Async queue processing with BullMQ. Handle thousands of renders in parallel without breaking a sweat." },
-                                { icon: "🔒", title: "Enterprise Ready", desc: "SOC2 compliance path, SSO, rate limiting, and dedicated infrastructure for high-volume clients." },
-                            ].map((feature, i) => (
-                                <div key={i} className="glass glass-hover rounded-2xl p-6 transition-all duration-300 hover:translate-y-[-2px]">
-                                    <div className="text-3xl mb-4">{feature.icon}</div>
-                                    <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
-                                    <p className="text-sm text-slate-400 leading-relaxed">{feature.desc}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* How It Works */}
-                <section id="how-it-works" className="py-24 border-t border-white/5">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-16">
-                            <h2 className="text-3xl sm:text-4xl font-bold">
-                                Three steps to <span className="gradient-text">visual automation</span>
-                            </h2>
-                        </div>
-                        <div className="grid gap-8 md:grid-cols-3">
-                            {[
-                                { step: "01", title: "Upload Your Brand", desc: "Set your colors, fonts, logo, and visual rules. We store them securely and apply them to every render." },
-                                { step: "02", title: "Call the API", desc: "Send a simple POST request with your content data. Our engine renders pixel-perfect visuals in seconds." },
-                                { step: "03", title: "Get Your Assets", desc: "Receive high-quality images or videos via webhook or polling. Ready to publish on any platform." },
-                            ].map((item, i) => (
-                                <div key={i} className="relative text-center p-8">
-                                    <div className="text-6xl font-black text-indigo-500/10 mb-4">{item.step}</div>
-                                    <h3 className="text-xl font-semibold text-white mb-3">{item.title}</h3>
-                                    <p className="text-sm text-slate-400 leading-relaxed">{item.desc}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* Pricing Section */}
-                <section id="pricing" className="py-24 border-t border-white/5">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-16">
-                            <h2 className="text-3xl sm:text-4xl font-bold">
-                                Simple, transparent <span className="gradient-text">pricing</span>
-                            </h2>
-                            <p className="mt-4 text-slate-400">Start free. Scale when you&apos;re ready.</p>
-                        </div>
-                        <div className="grid gap-8 md:grid-cols-3 max-w-5xl mx-auto">
-                            {/* Free */}
-                            <div className="glass rounded-2xl p-8 flex flex-col">
-                                <h3 className="text-lg font-semibold text-white">Free</h3>
-                                <div className="mt-4 flex items-baseline">
-                                    <span className="text-4xl font-bold text-white">$0</span>
-                                    <span className="text-slate-400 ml-2">/month</span>
-                                </div>
-                                <p className="mt-4 text-sm text-slate-400">Perfect for testing and prototyping.</p>
-                                <ul className="mt-6 space-y-3 flex-1">
-                                    {["50 renders/month", "1 Brand Kit", "Image output only", "Community support"].map((f, i) => (
-                                        <li key={i} className="flex items-center gap-2 text-sm text-slate-300">
-                                            <span className="text-green-400">✓</span> {f}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <Link href="/dashboard" className="mt-8 block text-center py-3 rounded-xl border border-slate-600 text-slate-300 hover:border-indigo-500 hover:text-white transition-all text-sm font-medium">
-                                    Get Started Free
-                                </Link>
-                            </div>
-
-                            {/* Pro — Highlighted */}
-                            <div className="relative glass rounded-2xl p-8 flex flex-col border-2 border-indigo-500/50 shadow-[0_0_40px_rgba(99,102,241,0.15)]">
-                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500 text-white">
-                                    Most Popular
-                                </div>
-                                <h3 className="text-lg font-semibold text-white">Pro</h3>
-                                <div className="mt-4 flex items-baseline">
-                                    <span className="text-4xl font-bold text-white">$29</span>
-                                    <span className="text-slate-400 ml-2">/month</span>
-                                </div>
-                                <p className="mt-4 text-sm text-slate-400">For teams and production workloads.</p>
-                                <ul className="mt-6 space-y-3 flex-1">
-                                    {["2,000 renders/month", "5 Brand Kits", "Image + Video output", "Priority rendering", "API webhooks", "Email support"].map((f, i) => (
-                                        <li key={i} className="flex items-center gap-2 text-sm text-slate-300">
-                                            <span className="text-green-400">✓</span> {f}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <Link href="/dashboard" className="mt-8 block text-center py-3 rounded-xl btn-gradient text-sm font-semibold">
-                                    Start Pro Trial →
-                                </Link>
-                            </div>
-
-                            {/* Enterprise */}
-                            <div className="glass rounded-2xl p-8 flex flex-col">
-                                <h3 className="text-lg font-semibold text-white">Enterprise</h3>
-                                <div className="mt-4 flex items-baseline">
-                                    <span className="text-4xl font-bold text-white">Custom</span>
-                                </div>
-                                <p className="mt-4 text-sm text-slate-400">For high-volume and custom needs.</p>
-                                <ul className="mt-6 space-y-3 flex-1">
-                                    {["Unlimited renders", "Unlimited Brand Kits", "Custom templates", "Dedicated infrastructure", "SLA guarantee", "Priority phone support"].map((f, i) => (
-                                        <li key={i} className="flex items-center gap-2 text-sm text-slate-300">
-                                            <span className="text-green-400">✓</span> {f}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <Link href="mailto:hello@agentcanvas.io" className="mt-8 block text-center py-3 rounded-xl border border-slate-600 text-slate-300 hover:border-indigo-500 hover:text-white transition-all text-sm font-medium">
-                                    Contact Sales
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Final CTA */}
-                <section className="py-24 border-t border-white/5">
-                    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                        <h2 className="text-3xl sm:text-4xl font-bold">
-                            Ready to give your agents <span className="gradient-text">creative powers</span>?
+            {/* Features */}
+            <section id="features" className="py-32 px-6 border-t border-white/[0.06]">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-20">
+                        <h2 className="text-4xl sm:text-5xl font-semibold text-white tracking-[-0.03em]">
+                            Built for scale.
                         </h2>
-                        <p className="mt-4 text-slate-400 text-lg">
-                            Join 200+ teams already using AgentCanvas to automate their visual content pipeline.
+                        <p className="mt-4 text-lg text-[#86868B] font-light">
+                            Everything your agents need to create visual content.
                         </p>
-                        <div className="mt-8">
-                            <Link href="/dashboard" className="btn-gradient inline-block px-10 py-4 rounded-xl text-lg font-semibold">
-                                Start Building Free →
-                            </Link>
-                        </div>
                     </div>
-                </section>
-            </main>
+                    <div className="grid gap-px bg-white/[0.06] rounded-2xl overflow-hidden md:grid-cols-2 lg:grid-cols-3">
+                        {features.map((f, i) => (
+                            <motion.div
+                                key={i}
+                                custom={i}
+                                initial="hidden"
+                                whileInView="visible"
+                                viewport={{ once: true, margin: "-50px" }}
+                                variants={fade}
+                                className="bg-black p-10 hover:bg-[#1D1D1F]/50 transition-colors duration-300"
+                            >
+                                <f.icon className="w-6 h-6 text-[#86868B] mb-5" strokeWidth={1.5} />
+                                <h3 className="text-[17px] font-semibold text-white mb-2">{f.title}</h3>
+                                <p className="text-[14px] text-[#86868B] leading-relaxed font-light">{f.desc}</p>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* How It Works */}
+            <section id="how-it-works" className="py-32 px-6 border-t border-white/[0.06]">
+                <div className="max-w-4xl mx-auto">
+                    <div className="text-center mb-20">
+                        <h2 className="text-4xl sm:text-5xl font-semibold text-white tracking-[-0.03em]">
+                            Three steps. That&apos;s it.
+                        </h2>
+                    </div>
+                    <div className="space-y-0">
+                        {[
+                            { num: "1", title: "Define your brand", desc: "Upload your colors, fonts, and logo. We store them securely and apply them to every render automatically." },
+                            { num: "2", title: "Call the API", desc: "Send a POST request with your content. Choose a template, pass your data, and our engine handles the rest." },
+                            { num: "3", title: "Get your assets", desc: "Receive production-ready images or videos via webhook. Ready to publish on any platform, no editing needed." },
+                        ].map((step, i) => (
+                            <motion.div
+                                key={i}
+                                custom={i}
+                                initial="hidden"
+                                whileInView="visible"
+                                viewport={{ once: true }}
+                                variants={fade}
+                                className="flex gap-8 py-12 border-b border-white/[0.06] last:border-0"
+                            >
+                                <span className="text-[48px] font-light text-[#86868B]/30 leading-none tabular-nums">{step.num}</span>
+                                <div>
+                                    <h3 className="text-xl font-semibold text-white mb-2">{step.title}</h3>
+                                    <p className="text-[15px] text-[#86868B] leading-relaxed font-light max-w-lg">{step.desc}</p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Pricing */}
+            <section id="pricing" className="py-32 px-6 border-t border-white/[0.06]">
+                <div className="max-w-5xl mx-auto">
+                    <div className="text-center mb-20">
+                        <h2 className="text-4xl sm:text-5xl font-semibold text-white tracking-[-0.03em]">
+                            Simple pricing.
+                        </h2>
+                        <p className="mt-4 text-lg text-[#86868B] font-light">
+                            Start free. Upgrade when you&apos;re ready.
+                        </p>
+                    </div>
+                    <div className="grid gap-6 md:grid-cols-3">
+                        {plans.map((plan, i) => (
+                            <motion.div
+                                key={i}
+                                custom={i}
+                                initial="hidden"
+                                whileInView="visible"
+                                viewport={{ once: true }}
+                                variants={fade}
+                                className={`rounded-2xl p-8 flex flex-col ${plan.highlight
+                                        ? "bg-[#1D1D1F] border-2 border-[#2997FF]/40 ring-1 ring-[#2997FF]/10"
+                                        : "bg-[#1D1D1F]/50 border border-white/[0.06]"
+                                    }`}
+                            >
+                                <div className="mb-6">
+                                    <h3 className="text-[15px] font-semibold text-white">{plan.name}</h3>
+                                    <div className="mt-3 flex items-baseline gap-1">
+                                        {plan.price !== "Custom" && <span className="text-[13px] text-[#86868B]">$</span>}
+                                        <span className="text-[40px] font-semibold text-white tracking-tight leading-none">{plan.price}</span>
+                                        <span className="text-[13px] text-[#86868B] ml-1">{plan.period}</span>
+                                    </div>
+                                    <p className="mt-3 text-[13px] text-[#86868B]">{plan.desc}</p>
+                                </div>
+                                <ul className="space-y-3 flex-1 mb-8">
+                                    {plan.features.map((f, j) => (
+                                        <li key={j} className="flex items-center gap-3 text-[14px] text-[#F5F5F7]/80">
+                                            <Check className="w-4 h-4 text-[#2997FF] shrink-0" strokeWidth={2} />
+                                            {f}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <Link
+                                    href={plan.name === "Enterprise" ? "mailto:hello@agentcanvas.io" : "/dashboard"}
+                                    className={`block text-center py-2.5 rounded-full text-[14px] font-medium transition-all duration-200 ${plan.highlight
+                                            ? "bg-[#2997FF] text-white hover:bg-[#2997FF]/90"
+                                            : "border border-white/[0.15] text-white hover:border-white/30"
+                                        }`}
+                                >
+                                    {plan.cta}
+                                </Link>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* CTA */}
+            <section className="py-32 px-6 border-t border-white/[0.06]">
+                <div className="max-w-3xl mx-auto text-center">
+                    <h2 className="text-4xl sm:text-5xl font-semibold text-white tracking-[-0.03em]">
+                        Ready to automate
+                        <br />
+                        visual content?
+                    </h2>
+                    <p className="mt-6 text-lg text-[#86868B] font-light">
+                        Join hundreds of teams using AgentCanvas.
+                    </p>
+                    <div className="mt-10">
+                        <Link
+                            href="/dashboard"
+                            className="inline-flex items-center gap-2 bg-white text-black px-8 py-3.5 rounded-full text-[15px] font-medium hover:bg-white/90 transition-all duration-200"
+                        >
+                            Start Building Free
+                            <ArrowRight className="w-4 h-4" />
+                        </Link>
+                    </div>
+                </div>
+            </section>
 
             {/* Footer */}
-            <footer className="border-t border-white/5 py-12">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                        <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 rounded-md btn-gradient flex items-center justify-center text-white font-bold text-xs">A</div>
-                            <span className="text-sm font-semibold text-slate-400">AgentCanvas</span>
-                        </div>
-                        <p className="text-xs text-slate-500">© 2026 AgentCanvas. All rights reserved.</p>
-                        <nav className="flex gap-6">
-                            <Link className="text-xs text-slate-500 hover:text-slate-300 transition-colors" href="#">Terms</Link>
-                            <Link className="text-xs text-slate-500 hover:text-slate-300 transition-colors" href="#">Privacy</Link>
-                            <Link className="text-xs text-slate-500 hover:text-slate-300 transition-colors" href="#">Docs</Link>
-                        </nav>
+            <footer className="border-t border-white/[0.06] py-8 px-6">
+                <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <span className="text-[13px] font-medium text-[#86868B]">AgentCanvas</span>
+                    <p className="text-[12px] text-[#86868B]/60">© 2026 AgentCanvas. All rights reserved.</p>
+                    <div className="flex gap-6">
+                        <Link href="#" className="text-[12px] text-[#86868B]/60 hover:text-[#86868B] transition-colors">Terms</Link>
+                        <Link href="#" className="text-[12px] text-[#86868B]/60 hover:text-[#86868B] transition-colors">Privacy</Link>
+                        <Link href="#" className="text-[12px] text-[#86868B]/60 hover:text-[#86868B] transition-colors">Docs</Link>
                     </div>
                 </div>
             </footer>
