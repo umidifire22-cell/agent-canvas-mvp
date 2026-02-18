@@ -37,6 +37,26 @@ fastify.post('/v1/render', async (request, reply) => {
     }
 });
 
+fastify.get('/v1/jobs/:jobId', async (request, reply) => {
+    const { jobId } = request.params as { jobId: string };
+    const job = await renderQueue.getJob(jobId);
+
+    if (!job) {
+        return reply.status(404).send({ error: 'Job not found' });
+    }
+
+    const state = await job.getState();
+    const progress = job.progress;
+
+    reply.send({
+        id: job.id,
+        state,
+        progress,
+        outputUrl: state === 'completed' ? `/outputs/${job.id}.${job.data.format}` : null,
+        error: state === 'failed' ? job.failedReason : null
+    });
+});
+
 const start = async () => {
     try {
         // Start the worker processing in the same process for MVP simplicity

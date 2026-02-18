@@ -33,6 +33,8 @@ const historyItems = [
     { title: "Q4 Results Summary", template: "LinkedIn Post", status: "completed", time: "1h ago" },
 ]
 
+interface DashboardProps { }
+
 export default function Dashboard() {
     const [activeTab, setActiveTab] = useState("create")
     const [loading, setLoading] = useState(false)
@@ -41,6 +43,9 @@ export default function Dashboard() {
     const [template, setTemplate] = useState("social-post")
     const [user, setUser] = useState<any>(null)
     const [authLoading, setAuthLoading] = useState(true)
+    const [outputUrl, setOutputUrl] = useState<string | null>(null)
+    const [jobId, setJobId] = useState<string | null>(null)
+    const [error, setError] = useState<string | null>(null)
     const router = useRouter()
 
     useEffect(() => {
@@ -71,13 +76,69 @@ export default function Dashboard() {
         router.replace("/login")
     }
 
-    const handleRender = () => {
+    const handleRender = async () => {
         setLoading(true)
         setRendered(false)
-        setTimeout(() => {
+        setError(null)
+        setOutputUrl(null)
+
+        try {
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
+            const response = await fetch(`${apiUrl}/v1/render`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    templateId: "SocialPost",
+                    data: {
+                        title,
+                        brandKit: {
+                            colors: {
+                                primary: "#2997FF",
+                                secondary: "#1D1D1F",
+                                background: "#000000"
+                            },
+                            typography: {
+                                headingFont: "Inter",
+                                bodyFont: "Inter"
+                            }
+                        }
+                    },
+                    format: "png"
+                })
+            })
+
+            const result = await response.json()
+            if (!response.ok) throw new Error(result.error || "Failed to start render")
+
+            setJobId(result.jobId)
+            pollJobStatus(result.jobId)
+        } catch (err: any) {
+            setError(err.message)
             setLoading(false)
-            setRendered(true)
-        }, 2500)
+        }
+    }
+
+    const pollJobStatus = async (id: string) => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
+        const interval = setInterval(async () => {
+            try {
+                const response = await fetch(`${apiUrl}/v1/jobs/${id}`)
+                const data = await response.json()
+
+                if (data.state === "completed") {
+                    clearInterval(interval)
+                    setOutputUrl(`${apiUrl}${data.outputUrl}`)
+                    setLoading(false)
+                    setRendered(true)
+                } else if (data.state === "failed") {
+                    clearInterval(interval)
+                    setError(data.error || "Render failed")
+                    setLoading(false)
+                }
+            } catch (err) {
+                console.error("Polling error:", err)
+            }
+        }, 2000)
     }
 
     if (authLoading) {
@@ -282,7 +343,13 @@ export default function Dashboard() {
                                         </button>
                                     )}
                                 </div>
-                                <div className="aspect-square max-w-sm mx-auto rounded-xl border border-white/[0.06] overflow-hidden bg-black/40 flex items-center justify-center">
+                                <div className="aspect-square max-w-sm mx-auto rounded-xl border border-white/[0.06] overflow-hidden bg-black/40 flex items-center justify-center relative">
+                                    {error && (
+                                        <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
+                                            <p className="text-[13px] text-[#FF375F]">{error}</p>
+                                        </div>
+                                    )}
+
                                     {loading ? (
                                         <motion.div
                                             initial={{ opacity: 0 }}
@@ -290,23 +357,22 @@ export default function Dashboard() {
                                             className="text-center"
                                         >
                                             <Loader2 className="w-8 h-8 text-[#2997FF] animate-spin mx-auto mb-3" />
-                                            <p className="text-[13px] text-[#86868B]">Rendering your asset...</p>
+                                            <p className="text-[13px] text-[#86868B]">Generating your asset...</p>
                                         </motion.div>
-                                    ) : rendered ? (
-                                        <motion.div
+                                    ) : outputUrl ? (
+                                        <motion.img
                                             initial={{ opacity: 0, scale: 0.95 }}
                                             animate={{ opacity: 1, scale: 1 }}
-                                            transition={{ duration: 0.4, ease: [0.25, 0.4, 0.25, 1] }}
-                                            className="w-full h-full bg-[#1D1D1F] flex flex-col items-center justify-center p-10 text-center relative overflow-hidden"
-                                        >
-                                            <div className="absolute inset-0 bg-gradient-to-br from-[#2997FF]/20 via-transparent to-[#BF5AF2]/20"></div>
-                                            <p className="relative text-2xl font-semibold text-white leading-tight tracking-tight">{title}</p>
-                                            <span className="relative mt-5 text-[11px] text-[#86868B] tracking-widest uppercase font-medium">AgentCanvas</span>
-                                        </motion.div>
+                                            src={outputUrl}
+                                            alt="Generated asset"
+                                            className="w-full h-full object-cover"
+                                        />
                                     ) : (
                                         <div className="text-center p-8">
-                                            <Image className="w-8 h-8 text-[#86868B]/40 mx-auto mb-3" strokeWidth={1} />
-                                            <p className="text-[13px] text-[#86868B]">Your asset will appear here</p>
+                                            <div className="w-12 h-12 bg-white/[0.04] rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <Sparkles className="w-6 h-6 text-[#2997FF]" />
+                                            </div>
+                                            <p className="text-[13px] text-[#86868B]">Your generated asset will appear here</p>
                                         </div>
                                     )}
                                 </div>
@@ -315,67 +381,73 @@ export default function Dashboard() {
                     )}
 
                     {/* History */}
-                    {activeTab === "history" && (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-[#1D1D1F] rounded-2xl border border-white/[0.06] overflow-hidden">
-                            <div className="px-6 py-4 border-b border-white/[0.06]">
-                                <h2 className="text-[17px] font-semibold text-white">Render History</h2>
-                            </div>
-                            {historyItems.map((item, i) => (
-                                <div key={i} className="px-6 py-4 flex items-center justify-between border-b border-white/[0.04] last:border-0 hover:bg-white/[0.02] transition-colors">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-9 h-9 rounded-lg bg-white/[0.04] flex items-center justify-center">
-                                            <Image className="w-4 h-4 text-[#86868B]" strokeWidth={1.5} />
-                                        </div>
-                                        <div>
-                                            <p className="text-[14px] font-medium text-white">{item.title}</p>
-                                            <p className="text-[12px] text-[#86868B]">{item.template} · {item.time}</p>
-                                        </div>
-                                    </div>
-                                    <span className={`text-[12px] font-medium px-2 py-0.5 rounded-md ${item.status === "completed"
-                                        ? "text-[#32D74B] bg-[#32D74B]/10"
-                                        : "text-[#FF9F0A] bg-[#FF9F0A]/10"
-                                        }`}>
-                                        {item.status}
-                                    </span>
+                    {
+                        activeTab === "history" && (
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-[#1D1D1F] rounded-2xl border border-white/[0.06] overflow-hidden">
+                                <div className="px-6 py-4 border-b border-white/[0.06]">
+                                    <h2 className="text-[17px] font-semibold text-white">Render History</h2>
                                 </div>
-                            ))}
-                        </motion.div>
-                    )}
+                                {historyItems.map((item, i) => (
+                                    <div key={i} className="px-6 py-4 flex items-center justify-between border-b border-white/[0.04] last:border-0 hover:bg-white/[0.02] transition-colors">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-9 h-9 rounded-lg bg-white/[0.04] flex items-center justify-center">
+                                                <Image className="w-4 h-4 text-[#86868B]" strokeWidth={1.5} />
+                                            </div>
+                                            <div>
+                                                <p className="text-[14px] font-medium text-white">{item.title}</p>
+                                                <p className="text-[12px] text-[#86868B]">{item.template} · {item.time}</p>
+                                            </div>
+                                        </div>
+                                        <span className={`text-[12px] font-medium px-2 py-0.5 rounded-md ${item.status === "completed"
+                                            ? "text-[#32D74B] bg-[#32D74B]/10"
+                                            : "text-[#FF9F0A] bg-[#FF9F0A]/10"
+                                            }`}>
+                                            {item.status}
+                                        </span>
+                                    </div>
+                                ))}
+                            </motion.div>
+                        )
+                    }
 
                     {/* Templates */}
-                    {activeTab === "templates" && (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                            <h2 className="text-[17px] font-semibold text-white mb-6">Templates</h2>
-                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                                {templates.map((tpl, i) => (
-                                    <button
-                                        key={i}
-                                        onClick={() => { setTemplate(tpl.name.toLowerCase().replace(" ", "-")); setActiveTab("create") }}
-                                        className="bg-[#1D1D1F] rounded-2xl border border-white/[0.06] overflow-hidden text-left hover:border-white/[0.12] transition-all duration-200 group"
-                                    >
-                                        <div className="h-28 flex items-center justify-center" style={{ backgroundColor: `${tpl.color}10` }}>
-                                            <Layout className="w-8 h-8 transition-transform duration-200 group-hover:scale-110" style={{ color: tpl.color }} strokeWidth={1.5} />
-                                        </div>
-                                        <div className="p-4">
-                                            <h3 className="text-[14px] font-medium text-white">{tpl.name}</h3>
-                                            <p className="text-[12px] text-[#86868B] mt-0.5">{tpl.size}</p>
-                                        </div>
-                                    </button>
-                                ))}
-                            </div>
-                        </motion.div>
-                    )}
+                    {
+                        activeTab === "templates" && (
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                                <h2 className="text-[17px] font-semibold text-white mb-6">Templates</h2>
+                                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                    {templates.map((tpl, i) => (
+                                        <button
+                                            key={i}
+                                            onClick={() => { setTemplate(tpl.name.toLowerCase().replace(" ", "-")); setActiveTab("create") }}
+                                            className="bg-[#1D1D1F] rounded-2xl border border-white/[0.06] overflow-hidden text-left hover:border-white/[0.12] transition-all duration-200 group"
+                                        >
+                                            <div className="h-28 flex items-center justify-center" style={{ backgroundColor: `${tpl.color}10` }}>
+                                                <Layout className="w-8 h-8 transition-transform duration-200 group-hover:scale-110" style={{ color: tpl.color }} strokeWidth={1.5} />
+                                            </div>
+                                            <div className="p-4">
+                                                <h3 className="text-[14px] font-medium text-white">{tpl.name}</h3>
+                                                <p className="text-[12px] text-[#86868B] mt-0.5">{tpl.size}</p>
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        )
+                    }
 
                     {/* Placeholder */}
-                    {!["create", "history", "templates"].includes(activeTab) && (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-[#1D1D1F] rounded-2xl border border-white/[0.06] p-16 text-center">
-                            <Settings className="w-8 h-8 text-[#86868B]/40 mx-auto mb-4" strokeWidth={1.5} />
-                            <h2 className="text-[17px] font-semibold text-white mb-2">Coming Soon</h2>
-                            <p className="text-[13px] text-[#86868B]">This section is under development.</p>
-                        </motion.div>
-                    )}
-                </div>
-            </div>
-        </div>
+                    {
+                        !["create", "history", "templates"].includes(activeTab) && (
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-[#1D1D1F] rounded-2xl border border-white/[0.06] p-16 text-center">
+                                <Settings className="w-8 h-8 text-[#86868B]/40 mx-auto mb-4" strokeWidth={1.5} />
+                                <h2 className="text-[17px] font-semibold text-white mb-2">Coming Soon</h2>
+                                <p className="text-[13px] text-[#86868B]">This section is under development.</p>
+                            </motion.div>
+                        )
+                    }
+                </div >
+            </div >
+        </div >
     )
 }
