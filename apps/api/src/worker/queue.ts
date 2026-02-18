@@ -2,11 +2,11 @@ import { Queue, Worker } from 'bullmq';
 import IORedis from 'ioredis';
 import { renderSocialPost } from './renderer';
 
-const connection = new IORedis('redis://localhost:6379', {
-    maxRetriesPerRequest: null,
-});
+const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
 
-export const renderQueue = new Queue('render-queue', { connection });
+export const renderQueue = new Queue('render-queue', {
+    connection: new IORedis(redisUrl, { maxRetriesPerRequest: null }) as any
+});
 
 export const startWorker = () => {
     const worker = new Worker('render-queue', async job => {
@@ -20,7 +20,9 @@ export const startWorker = () => {
 
         await renderSocialPost(data, `job-${job.id}`, format);
 
-    }, { connection });
+    }, {
+        connection: new IORedis(redisUrl, { maxRetriesPerRequest: null }) as any
+    });
 
     worker.on('completed', job => {
         console.log(`Job ${job.id} has completed!`);
