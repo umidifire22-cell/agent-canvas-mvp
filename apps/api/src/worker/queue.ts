@@ -4,6 +4,7 @@ import { renderSocialPost } from './renderer';
 
 import { generatePostContent, generatePostImage } from '../core/ai';
 import { uploadFile } from '../core/storage';
+import { supabase } from '../core/supabase';
 
 const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
 
@@ -65,12 +66,30 @@ export const startWorker = () => {
         connection: new IORedis(redisUrl, { maxRetriesPerRequest: null }) as any
     });
 
-    worker.on('completed', job => {
+    worker.on('completed', async (job) => {
         console.log(`Job ${job.id} has completed!`);
+        if (job.data.renderId) {
+            await supabase.from('renders').update({
+                status: 'completed',
+                output_url: job.returnvalue?.url
+            }).eq('id', job.data.renderId);
+        }
     });
 
-    worker.on('failed', (job, err) => {
-        console.log(`Job ${job!.id} has failed with ${err.message}`);
+    worker.on('failed', async (job, err) => {
+        console.log(`Job ${job?.id} has failed with ${err.message}`);
+        if (job && job.data.renderId) {
+            await supabase.from('renders').update({
+                status: 'failed'
+            }).eq('id', job.data.renderId);
+
+            if (job.data.userId) {
+                const { data: profile } = await supabase.from('profiles').select('credits_balance').eq('id', job.data.userId).single();
+                if (profile) {
+                    await supabase.from('profiles').update({ credits_balance: profile.credits_balance + 1 }).eq('id', job.data.userId);
+                }
+            }
+        }
     });
 
     console.log('Worker started...');
